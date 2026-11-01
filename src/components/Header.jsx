@@ -6,11 +6,7 @@ import {
   Globe, 
   Menu, 
   X, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  UserCheck, 
-  ShieldCheck 
+  UserCheck
 } from 'lucide-react';
 
 export default function Header({ 
@@ -75,42 +71,6 @@ export default function Header({
 
   return (
     <>
-      {/* Top Notification Bar with official Ministry accreditation and direct contacts */}
-      <div className="topbar">
-        <div className="container topbar-content">
-          <div className="topbar-items">
-            <span className="topbar-item">
-              <ShieldCheck size={14} color="#F28A24" />
-              <span>{lang === 'ar' ? 'مؤسسة تعليمية رائدة — إعدادي وتأهيلي' : 'Établissement d\'excellence — Collège & Lycée'}</span>
-            </span>
-            <span className="topbar-item">
-              <MapPin size={14} color="#247DBB" />
-              <span>{lang === 'ar' ? 'الدار البيضاء — الفداء مرس السلطان' : 'Casablanca — El Fida Mers Sultan'}</span>
-            </span>
-          </div>
-
-          <div className="topbar-items">
-            <a href="tel:0522283699" className="topbar-item" style={{ direction: 'ltr' }}>
-              <Phone size={14} color="#F28A24" />
-              <span>05 22 28 36 99</span>
-            </a>
-            <a href="mailto:farahinfopriv@yahoo.fr" className="topbar-item">
-              <Mail size={14} color="#247DBB" />
-              <span>farahinfopriv@yahoo.fr</span>
-            </a>
-            <button 
-              type="button" 
-              onClick={onNavigateAdmin} 
-              className="topbar-admin-btn"
-              title={lang === 'ar' ? 'فضاء الإدارة' : 'Espace Direction'}
-            >
-              <UserCheck size={14} color="#F28A24" />
-              <span>{lang === 'ar' ? 'فضاء الإدارة' : 'Espace Direction'}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
       {/* Main Sticky Navbar */}
       <nav className="navbar">
         <div className="container navbar-container">
@@ -151,6 +111,19 @@ export default function Header({
                 </li>
               );
             })}
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  setMobileOpen(false);
+                  onNavigateAdmin?.();
+                }}
+                className="nav-link nav-admin-link"
+              >
+                <UserCheck size={16} />
+                <span>{lang === 'ar' ? 'فضاء الإدارة' : 'Espace Direction'}</span>
+              </button>
+            </li>
           </ul>
 
           {/* Actions: Language Switcher, Inscription Button & Mobile Toggle */}
