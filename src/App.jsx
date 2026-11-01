@@ -18,7 +18,6 @@ import ActivitiesSection from './components/ActivitiesSection';
 import GallerySection from './components/GallerySection';
 import VideoSection from './components/VideoSection';
 import NewsSection from './components/NewsSection';
-import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import RegistrationModal from './components/RegistrationModal';
 import CustomPageView from './components/CustomPageView';
@@ -149,7 +148,6 @@ function MainWebsite() {
             <GallerySection items={gallery} />
             <VideoSection videos={videos} />
             <NewsSection news={news} />
-            <ContactSection settings={settings} />
           </>
         )}
       </main>

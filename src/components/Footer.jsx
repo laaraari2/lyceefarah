@@ -13,7 +13,7 @@ export default function Footer({ settings, onNavigateAdmin }) {
   };
 
   return (
-    <footer className="footer">
+    <footer id="contact" className="footer">
       <div className="container">
         <div className="footer-grid">
           {/* Brand & Accreditation */}
