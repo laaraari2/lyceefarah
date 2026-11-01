@@ -218,6 +218,10 @@ VALUES
 ON CONFLICT DO NOTHING;
 
 -- Video Seeds
+-- Remove the previously seeded non-school placeholder without touching other videos.
+DELETE FROM public.videos
+WHERE video_url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+
 INSERT INTO public.videos (title_ar, title_fr, video_url, thumbnail_url, duration, is_featured)
 VALUES
 (
@@ -225,14 +229,6 @@ VALUES
   'Vidéo de présentation du Lycée Collège El Farah Privé',
   '/videos/presentation.mp4',
   '/images/building.png',
-  '02:15',
+  '00:01',
   true
-),
-(
-  'أجواء حفل تتويج وتكريم متفوقي الباكالوريا',
-  'Moments forts de la cérémonie des bacheliers',
-  'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-  '/images/graduation-ceremony.png',
-  '04:30',
-  false
 ) ON CONFLICT DO NOTHING;

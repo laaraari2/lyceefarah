@@ -95,7 +95,11 @@ export default function Header({
 
 
           {/* Navigation Links */}
-          <ul className={`nav-links ${mobileOpen ? 'open' : ''}`}>
+          <ul
+            id="primary-navigation"
+            className={`nav-links ${mobileOpen ? 'open' : ''}`}
+            aria-label={lang === 'ar' ? 'التنقل الرئيسي' : 'Navigation principale'}
+          >
             {itemsToRender.map((item) => {
               const label = lang === 'ar' ? (item.label_ar || item.label) : (item.label_fr || item.label);
               const isActive = activeSection === item.target || activeSection === item.id;
@@ -105,6 +109,7 @@ export default function Header({
                     type="button"
                     onClick={() => handleNavClick(item)}
                     className={`nav-link ${isActive ? 'active' : ''}`}
+                    aria-current={isActive ? 'page' : undefined}
                   >
                     {label}
                   </button>
@@ -141,8 +146,12 @@ export default function Header({
             <button
               type="button"
               className="mobile-menu-toggle"
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-label="Toggle Menu"
+              onClick={() => setMobileOpen(open => !open)}
+              aria-label={mobileOpen
+                ? (lang === 'ar' ? 'إغلاق القائمة' : 'Fermer le menu')
+                : (lang === 'ar' ? 'فتح القائمة' : 'Ouvrir le menu')}
+              aria-controls="primary-navigation"
+              aria-expanded={mobileOpen}
             >
               {mobileOpen ? <X size={26} /> : <Menu size={26} />}
             </button>

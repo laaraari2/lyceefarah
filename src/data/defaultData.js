@@ -144,6 +144,8 @@ export const DEFAULT_GALLERY = [
   }
 ];
 
+export const RETIRED_PLACEHOLDER_VIDEO_URL = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
+
 export const DEFAULT_VIDEOS = [
   {
     id: 'vid-1',
@@ -151,17 +153,8 @@ export const DEFAULT_VIDEOS = [
     title_fr: 'Présentation vidéo du Lycée Collège El Farah Privé',
     video_url: '/videos/presentation.mp4',
     thumbnail_url: '/images/building.png',
-    duration: '02:15',
+    duration: '00:01',
     is_featured: true
-  },
-  {
-    id: 'vid-2',
-    title_ar: 'مقتطفات من حفل تتويج وتكريم متفوقي الباكالوريا',
-    title_fr: 'Moments forts de la célébration des bacheliers',
-    video_url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    thumbnail_url: '/images/graduation-ceremony.png',
-    duration: '04:10',
-    is_featured: false
   }
 ];
 
@@ -246,4 +239,3 @@ export const DEFAULT_CUSTOM_PAGES = [
     created_at: '2026-10-15T09:00:00Z'
   }
 ];
-

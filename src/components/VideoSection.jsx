@@ -1,10 +1,14 @@
 import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
+import { RETIRED_PLACEHOLDER_VIDEO_URL } from '../data/defaultData';
 import Editable from './Editable';
 import { Video, Film, Edit3 } from 'lucide-react';
 
 export default function VideoSection({ videos = [] }) {
   const { lang, t, isLiveEditMode, getMediaOverride, openMediaEditor } = useLanguage();
+  const visibleVideos = videos.filter(vid => (
+    (getMediaOverride(`video_item_${vid.id}`) || vid.video_url) !== RETIRED_PLACEHOLDER_VIDEO_URL
+  ));
 
   return (
     <section id="videos" className="section-padding" style={{ backgroundColor: 'var(--bg-surface)' }}>
@@ -26,7 +30,7 @@ export default function VideoSection({ videos = [] }) {
         </div>
 
         <div className="videos-grid">
-          {videos.map(vid => {
+          {visibleVideos.map(vid => {
             const videoKey = `video_item_${vid.id}`;
             const resolvedUrl = getMediaOverride(videoKey) || vid.video_url;
 
@@ -65,7 +69,7 @@ export default function VideoSection({ videos = [] }) {
                     {lang === 'ar' ? vid.title_ar : vid.title_fr}
                   </h3>
                   <span style={{ fontSize: '0.85rem', color: 'var(--text-light)', fontWeight: 600 }}>
-                    {vid.duration ? `${vid.duration} min` : 'HD'}
+                    {vid.duration || 'HD'}
                   </span>
                 </div>
               </div>

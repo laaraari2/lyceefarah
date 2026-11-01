@@ -2,7 +2,6 @@ import React from 'react';
 import { useLanguage } from '../context/LanguageContext';
 import Editable from './Editable';
 import { 
-  FlaskConical, 
   Theater, 
   Trophy, 
   Compass, 
@@ -14,12 +13,6 @@ export default function ActivitiesSection() {
   const { lang, t } = useLanguage();
 
   const activities = [
-    {
-      icon: FlaskConical,
-      titleKey: 'act_labs',
-      descKey: 'act_labs_desc',
-      label: 'المختبرات العلمية'
-    },
     {
       icon: Theater,
       titleKey: 'act_clubs',

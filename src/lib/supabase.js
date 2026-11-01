@@ -4,6 +4,7 @@ import {
   DEFAULT_NEWS, 
   DEFAULT_GALLERY, 
   DEFAULT_VIDEOS, 
+  RETIRED_PLACEHOLDER_VIDEO_URL,
   DEFAULT_INQUIRIES,
   DEFAULT_NAV_ITEMS,
   DEFAULT_CUSTOM_PAGES
@@ -53,11 +54,30 @@ function setLocal(key, value) {
   }
 }
 
+function setLocalVideos(videos) {
+  const cachedVideos = videos
+    .filter(video => video?.video_url !== RETIRED_PLACEHOLDER_VIDEO_URL)
+    .map(video => (
+      video?.video_url === '/videos/presentation.mp4' && video.duration === '02:15'
+        ? { ...video, duration: '00:01' }
+        : video
+    ));
+  setLocal(STORAGE_KEYS.VIDEOS, cachedVideos);
+  return cachedVideos;
+}
+
 // Initialize local cache if empty
 if (!localStorage.getItem(STORAGE_KEYS.SETTINGS)) setLocal(STORAGE_KEYS.SETTINGS, DEFAULT_SETTINGS);
 if (!localStorage.getItem(STORAGE_KEYS.NEWS)) setLocal(STORAGE_KEYS.NEWS, DEFAULT_NEWS);
 if (!localStorage.getItem(STORAGE_KEYS.GALLERY)) setLocal(STORAGE_KEYS.GALLERY, DEFAULT_GALLERY);
-if (!localStorage.getItem(STORAGE_KEYS.VIDEOS)) setLocal(STORAGE_KEYS.VIDEOS, DEFAULT_VIDEOS);
+if (!localStorage.getItem(STORAGE_KEYS.VIDEOS)) setLocalVideos(DEFAULT_VIDEOS);
+const cachedVideos = getLocal(STORAGE_KEYS.VIDEOS, []);
+if (Array.isArray(cachedVideos)) {
+  const currentVideos = setLocalVideos(cachedVideos);
+  if (JSON.stringify(currentVideos) !== JSON.stringify(cachedVideos)) {
+    setLocal(STORAGE_KEYS.VIDEOS, currentVideos);
+  }
+}
 if (!localStorage.getItem(STORAGE_KEYS.INQUIRIES)) setLocal(STORAGE_KEYS.INQUIRIES, DEFAULT_INQUIRIES);
 if (!localStorage.getItem(STORAGE_KEYS.NAV_ITEMS)) setLocal(STORAGE_KEYS.NAV_ITEMS, DEFAULT_NAV_ITEMS);
 if (!localStorage.getItem(STORAGE_KEYS.CUSTOM_PAGES)) setLocal(STORAGE_KEYS.CUSTOM_PAGES, DEFAULT_CUSTOM_PAGES);
@@ -339,8 +359,7 @@ export async function getVideosList() {
         .select('*')
         .order('created_at', { ascending: false });
       if (!error && data) {
-        setLocal(STORAGE_KEYS.VIDEOS, data);
-        return data;
+        return setLocalVideos(data);
       }
     } catch (e) {
       console.warn('Supabase getVideosList error:', e);
@@ -358,14 +377,14 @@ export async function createVideoItem(item) {
       .single();
     if (error) throw error;
     const list = getLocal(STORAGE_KEYS.VIDEOS, DEFAULT_VIDEOS);
-    setLocal(STORAGE_KEYS.VIDEOS, [data, ...list]);
+    setLocalVideos([data, ...list]);
     return data;
   }
 
   const newItem = { ...item, id: item.id || ('vid-' + Date.now()), created_at: new Date().toISOString() };
   const list = getLocal(STORAGE_KEYS.VIDEOS, DEFAULT_VIDEOS);
   const updated = [newItem, ...list];
-  setLocal(STORAGE_KEYS.VIDEOS, updated);
+  setLocalVideos(updated);
   return newItem;
 }
 
@@ -379,13 +398,13 @@ export async function updateVideoItem(id, updates) {
       .single();
     if (error) throw error;
     const list = getLocal(STORAGE_KEYS.VIDEOS, DEFAULT_VIDEOS);
-    setLocal(STORAGE_KEYS.VIDEOS, list.map(item => item.id === id ? data : item));
+    setLocalVideos(list.map(item => item.id === id ? data : item));
     return data;
   }
 
   const list = getLocal(STORAGE_KEYS.VIDEOS, DEFAULT_VIDEOS);
   const updated = list.map(item => item.id === id ? { ...item, ...updates } : item);
-  setLocal(STORAGE_KEYS.VIDEOS, updated);
+  setLocalVideos(updated);
   return updated.find(item => item.id === id);
 }
 
@@ -396,7 +415,7 @@ export async function deleteVideoItem(id) {
   }
   const list = getLocal(STORAGE_KEYS.VIDEOS, DEFAULT_VIDEOS);
   const updated = list.filter(item => item.id !== id);
-  setLocal(STORAGE_KEYS.VIDEOS, updated);
+  setLocalVideos(updated);
   return true;
 }
 
